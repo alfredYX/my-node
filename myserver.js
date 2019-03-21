@@ -65,7 +65,7 @@ app.post('/edit',function (req, res) { //添加的代码
         if (err) throw err;
         let dbo = db.db("data");
         let whereStr = {"_id":ObjectId(req.body._id)}
-        let updateStr = {$set: {'name': req.body.name}}
+        let updateStr = {$set: {'name': req.body.name,'price':req.body.price}}
         dbo.collection("data").updateOne(whereStr, updateStr, function (err, result) {
             if (err) throw err;
             let myjson = {

@@ -28,7 +28,8 @@ app.get('/get', function (req, res) { //查询的代码
     MongoClient.connect(url, {useNewUrlParser:true},function (err, db) {
         if (err) throw err;
         let dbo = db.db("data");
-        dbo.collection("data").find().toArray(function (err, result) { // 返回集合中所有数据
+        let whereStr = {"name": {$regex: '.*' + req.query.name + '.*'}}   
+        dbo.collection("data").find(whereStr).toArray(function (err, result) { // 返回集合中所有数据
             if (err) throw err;
             let myjson = {
                 code : 200,
@@ -61,11 +62,12 @@ app.post('/add',function (req, res) { //添加的代码
 })
 
 app.post('/edit',function (req, res) { //添加的代码
-    MongoClient.connect(url, function (err, db) {
+    MongoClient.connect(url, { useNewUrlParser: true },function (err, db) {
         if (err) throw err;
         let dbo = db.db("data");
         let whereStr = {"_id":ObjectId(req.body._id)}
-        let updateStr = {$set: {'name': req.body.name,'price':req.body.price}}
+        let {_id,...params} = req.body
+        let updateStr = {$set: {...params}}
         dbo.collection("data").updateOne(whereStr, updateStr, function (err, result) {
             if (err) throw err;
             let myjson = {

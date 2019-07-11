@@ -24,11 +24,14 @@ app.get('/', function (req, res) {
 res.send('This is test message!');
 })
 
-app.get('/get', function (req, res) { //查询的代码
+app.get('/get', function (req, res) { //查询
     MongoClient.connect(url, {useNewUrlParser:true},function (err, db) {
         if (err) throw err;
         let dbo = db.db("data");
-        let whereStr = {"name": {$regex: '.*' + req.query.name + '.*'}}   
+        let whereStr = null
+        if(req.query.name){
+            whereStr = {"name": {$regex: '.*' + req.query.name + '.*'}}
+        }
         dbo.collection("data").find(whereStr).toArray(function (err, result) { // 返回集合中所有数据
             if (err) throw err;
             let myjson = {
@@ -42,7 +45,7 @@ app.get('/get', function (req, res) { //查询的代码
 
 })
 
-app.post('/add',function (req, res) { //添加的代码
+app.post('/add',function (req, res) { //添加
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
         let dbo = db.db("data");
@@ -61,7 +64,7 @@ app.post('/add',function (req, res) { //添加的代码
 
 })
 
-app.post('/edit',function (req, res) { //添加的代码
+app.post('/edit',function (req, res) { //编辑
     MongoClient.connect(url, { useNewUrlParser: true },function (err, db) {
         if (err) throw err;
         let dbo = db.db("data");
@@ -83,7 +86,7 @@ app.post('/edit',function (req, res) { //添加的代码
 
 })
 
-app.post('/delete',function (req, res) { //添加的代码
+app.post('/delete',function (req, res) { //删除
     MongoClient.connect(url, { useNewUrlParser: true },function (err, db) {
         if (err) throw err;
         let dbo = db.db("data");

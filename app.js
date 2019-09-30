@@ -4,10 +4,11 @@ let route = require('./routes/index.js')
  
 let app = express();   
  
+// 跨域问题
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    // res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    res.header("Access-Control-Allow-Headers", "Content-Type");  // 与前端请求头一直
+    // res.header("Access-Control-Allow-Headers", "X-Requested-With");//x-requested-with 解决上传图片跨域问题
+    res.header("Access-Control-Allow-Headers", "Content-Type,x-requested-with");  // 与前端请求头一直
     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
     res.header("X-Powered-By",' 3.2.1')
     res.header("Content-Type", "application/json;charset=utf-8");

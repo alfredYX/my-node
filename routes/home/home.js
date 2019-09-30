@@ -5,7 +5,6 @@ const image = require("imageinfo"); //引用imageinfo模块
 const multer = require("multer");
 const path = require('path')
 
-const os=require('os');
 let upload = multer({ dest: 'uploads/imgs/' })
 
 let MongoClient = require('mongodb').MongoClient;
@@ -58,6 +57,7 @@ router.post('/uploads', upload.single('avatar'), function (req, res, next) {
     }
 };
 
+// 获取文件/图片
 router.get('/getImg', function(req, res, next) {
     //获取文件夹下的所有图片
     let srclist = getFiles.getImageFiles(path.join(__dirname,'../../uploads/imgs/'));
@@ -65,13 +65,17 @@ router.get('/getImg', function(req, res, next) {
         rt.push({'imsrc':item})
         return rt
     },[])
+    let myjson = {
+        code : 200,
+        data : {imgsUrl:srcNewList}
+    }
+    res.send(myjson)
+})
 
-    let filePath = path.join(__dirname,'../../uploads/imgs/' + '1a84e05848df3743d70f7c0729de3efc'); //访问的本地图片路径
-    // let myjson = {
-    //     code : 200,
-    //     data : {imgUrl:filePath}
-    // }
-    // res.send(myjson)
+// 下载图片
+router.get('/getImgUrl/:id', function(req, res, next) {
+    // let filePath = path.join(__dirname,'../../uploads/imgs/' + '1a84e05848df3743d70f7c0729de3efc'); //访问的本地图片路径    
+    let filePath = path.join(__dirname,'../../uploads/imgs/' + req.params.id); //访问的本地图片路径
     res.download(filePath)
 })
 

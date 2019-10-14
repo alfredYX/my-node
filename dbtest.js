@@ -1,5 +1,5 @@
 let MongoClient = require('mongodb').MongoClient;
-let url = 'mongodb://localhost:27017/';1
+let url = 'mongodb://localhost:27017/';
 // 因为mongoDB的id主键是objectId的类型的，需要用到mongodb的ObjectId
 // var ObjectId = require('mongodb').ObjectId; 
 // 增加

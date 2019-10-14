@@ -15,7 +15,6 @@ router.get('/', function (req, res) {
 })
 
 router.post('/uploads', upload.single('avatar'), function (req, res, next) { 
-
     let myjson = {
         code : 200,
         data : null
@@ -52,15 +51,15 @@ router.post('/uploads', upload.single('avatar'), function (req, res, next) {
      this.getFileList(path).forEach((item) => {
       var ms = image(fs.readFileSync(item.path + item.filename));
       ms.mimeType && (imageList.push(item.filename))
-     });
+     })
      return imageList;
     }
-};
+}
 
 // 获取文件/图片
 router.get('/getImg', function(req, res, next) {
     //获取文件夹下的所有图片
-    let srclist = getFiles.getImageFiles(path.join(__dirname,'../../uploads/imgs/'));
+    let srclist = getFiles.getImageFiles(path.join(__dirname,'../../uploads/imgs/'))
     let srcNewList = srclist.reduce ( (rt, item) => {
         rt.push({'imsrc':item})
         return rt
@@ -79,4 +78,4 @@ router.get('/getImgUrl/:id', function(req, res, next) {
     res.download(filePath)
 })
 
-module.exports = router; 
+module.exports = router
